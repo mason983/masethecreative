@@ -38,7 +38,7 @@ function shell({ title, description, path, body, theme = "dark" }) {
   <meta name="description" content="${description}"><link rel="canonical" href="${canonical}">
   <meta property="og:type" content="website"><meta property="og:site_name" content="Mase the Creative"><meta property="og:title" content="${title} — Mase the Creative"><meta property="og:description" content="${description}"><meta property="og:url" content="${canonical}"><meta property="og:image" content="${site.url}/media/chef-doorway.webp">
   <meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#0b0b0a">
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/styles.css">
+  <link rel="icon" href="/mase-favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/styles.css">
   <script type="application/ld+json">${JSON.stringify({"@context":"https://schema.org","@type":"ProfessionalService",name:site.name,url:site.url,sameAs:[site.instagram],founder:{"@type":"Person",name:"Mason Osborne"},areaServed:"United Kingdom"})}</script>
 </head>
 <body>
