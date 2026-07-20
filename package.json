@@ -1,0 +1,12 @@
+{
+  "name": "mase-the-creative-redesign",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.mjs",
+    "build": "node build.mjs",
+    "preview": "PORT=4173 node server.mjs dist",
+    "start": "node server.mjs dist"
+  }
+}

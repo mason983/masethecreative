@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: mase-the-creative
+    runtime: node
+    buildCommand: npm run build
+    startCommand: npm start
+    healthCheckPath: /
+    autoDeployTrigger: commit
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_CHAT_MODEL
+        value: gpt-5.6-luna
