@@ -3,7 +3,7 @@ services:
     name: mase-the-creative
     runtime: node
     plan: free
-    buildCommand: npm run build
+    buildCommand: npm install --include=dev --no-audit --no-fund && npm run build
     startCommand: npm start
     healthCheckPath: /
     autoDeployTrigger: commit
