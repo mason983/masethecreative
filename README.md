@@ -1,6 +1,6 @@
 # Mase the Creative — website redesign
 
-A self-contained, dependency-free static website generated with Node.js. The production output is written to `dist/`.
+A Node-generated public website with an authenticated Supabase client workspace at `/portal/`. The production output is written to `dist/`.
 
 ## Pages
 
@@ -14,6 +14,7 @@ A self-contained, dependency-free static website generated with Node.js. The pro
 - Contact
 - Custom 404
 - Ask Mase business chatbot
+- Mase Workspace client portal
 
 ## Run locally
 
@@ -25,6 +26,8 @@ npm run preview
 ```
 
 Then open `http://localhost:4173`.
+
+Install dependencies first with `pnpm install` (preferred) or `npm install`. Portal setup, security and deployment instructions are in [`PORTAL_SETUP.md`](./PORTAL_SETUP.md).
 
 If `npm` is unavailable but `node` is installed:
 
@@ -48,11 +51,11 @@ The server uses the OpenAI Responses API through `/api/chat`. It includes input 
 
 ## Deploy
 
-Run the production build and deploy `server.mjs`, `chatbot-config.mjs` and `dist/` to a Node.js host. Configure the private `OPENAI_API_KEY` environment variable there. A purely static host can still run the deterministic demo assistant, but cannot securely call OpenAI without a serverless function equivalent to `/api/chat`.
+Run the production build and deploy `server.mjs`, `chatbot-config.mjs` and `dist/` to a Node.js host. Configure private server variables there. The portal requires the Node server for protected invitation and client-creation endpoints.
 
 ### Render
 
-The included `render.yaml` makes the repository deployable as a Render Blueprint. Connect the repository from Render, provide `OPENAI_API_KEY` when prompted, and let Render run the configured build and start commands. Test the generated `onrender.com` address before adding the production domain.
+The included `render.yaml` makes the repository deployable as a Render Blueprint. Connect the repository from Render, provide the requested OpenAI and Supabase variables, and let Render run the configured build and start commands. Test the generated `onrender.com` address before adding the production domain.
 
 ## Content architecture
 

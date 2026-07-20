@@ -1,5 +1,6 @@
-import { cp, mkdir, rm, writeFile } from "node:fs/promises";
+import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
+import { build as bundle } from "esbuild";
 
 const site = {
   url: "https://masethecreative.co.uk",
@@ -48,10 +49,10 @@ function shell({ title, description, path, body, theme = "dark", schema = "" }) 
   <a class="skip" href="#main">Skip to content</a>
   <header class="site-header" data-header>
     <a class="brand" href="/" aria-label="Mase the Creative home"><img class="brand-logo" src="/brand/mase-logo.png" alt="Mase the Creative"></a>
-    <nav class="desktop-nav" aria-label="Primary">${nav.map(([n,h]) => `<a href="${h}"${path.startsWith(h.replace(/\/$/,"")) ? ` aria-current="page"` : ""}>${n}</a>`).join("")}<a class="nav-cta" href="/contact/">Start a project</a></nav>
+    <nav class="desktop-nav" aria-label="Primary">${nav.map(([n,h]) => `<a href="${h}"${path.startsWith(h.replace(/\/$/,"")) ? ` aria-current="page"` : ""}>${n}</a>`).join("")}<a class="nav-login" href="/portal/">Client Login</a><a class="nav-cta" href="/contact/">Start a project</a></nav>
     <button class="menu-button" type="button" aria-expanded="false" aria-controls="mobile-menu"><span>Menu</span><i></i><i></i></button>
   </header>
-  <div class="mobile-menu" id="mobile-menu" aria-hidden="true"><nav aria-label="Mobile">${nav.map(([n,h],i)=>`<a href="${h}"><small>0${i+1}</small>${n}</a>`).join("")}<a href="/contact/"><small>0${nav.length+1}</small>Start a project</a></nav><a href="${site.instagram}">Instagram ↗</a></div>
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true"><nav aria-label="Mobile">${nav.map(([n,h],i)=>`<a href="${h}"><small>0${i+1}</small>${n}</a>`).join("")}<a href="/portal/"><small>0${nav.length+1}</small>Client Login</a><a href="/contact/"><small>0${nav.length+2}</small>Start a project</a></nav><a href="${site.instagram}">Instagram ↗</a></div>
   <main id="main">${body}</main>
   <footer class="site-footer">
     <div><p class="eyebrow">Ready when you are</p><h2>Make something<br><em>worth watching.</em></h2>${arrow("Start a project", "/contact/", "button light")}</div>
@@ -160,6 +161,25 @@ await rm("dist", { recursive: true, force: true });
 await mkdir("dist", { recursive: true });
 for (const [file, html] of pages) { const out=join("dist",file); await mkdir(dirname(out),{recursive:true}); await writeFile(out,html); }
 await cp("public","dist",{recursive:true});
+await mkdir("dist/portal", { recursive: true });
+await cp("portal/index.html", "dist/portal/index.html");
+await cp("portal/styles.css", "dist/portal/styles.css");
+await bundle({
+  entryPoints: ["portal/main.ts"],
+  bundle: true,
+  minify: true,
+  sourcemap: false,
+  platform: "browser",
+  format: "iife",
+  target: ["es2022"],
+  outfile: "dist/portal/app.js",
+  define: {
+    __SUPABASE_URL__: JSON.stringify(process.env.SUPABASE_URL || ""),
+    __SUPABASE_ANON_KEY__: JSON.stringify(process.env.SUPABASE_ANON_KEY || ""),
+  },
+});
+const portalBundle = await readFile("dist/portal/app.js", "utf8");
+await writeFile("dist/portal/app.js", portalBundle.replace(/[\t ]+$/gm, ""));
 const urls = ["/","/work/","/clients/","/services/","/content-guidance/","/about/","/contact/",...projects.map(p=>`/work/${p.slug}/`)];
 await writeFile("dist/sitemap.xml",`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.map(x=>`<url><loc>${site.url}${x}</loc></url>`).join("")}</urlset>`);
 await writeFile("dist/robots.txt",`User-agent: *\nAllow: /\nSitemap: ${site.url}/sitemap.xml\n`);

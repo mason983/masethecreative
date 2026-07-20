@@ -6,7 +6,15 @@
   "scripts": {
     "dev": "node server.mjs",
     "build": "node build.mjs",
+    "check": "tsc --noEmit && node --check build.mjs && node --check server.mjs && node --check chatbot-config.mjs && node --check public/main.js && node --check public/chatbot.js",
     "preview": "PORT=4173 node server.mjs dist",
     "start": "node server.mjs dist"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.110.7"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.1",
+    "typescript": "^7.0.2"
   }
 }
