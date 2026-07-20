@@ -9,6 +9,7 @@ A self-contained, dependency-free static website generated with Node.js. The pro
 - Four reusable case studies
 - Clients
 - Services
+- Content Direction monthly guidance membership
 - About
 - Contact
 - Custom 404

@@ -91,6 +91,9 @@
   function localReply(message) {
     const value = message.trim();
     const lower = value.toLowerCase();
+    if (/content direction|content guidance|membership|create (it|content) myself|make (it|content) myself/.test(lower)) {
+      return { text: "Content Direction by Mase is a paid monthly guidance membership for business owners who want to create better content themselves. It covers practical decisions around kit, software, workflow and what to make next—and helps you recognise when professional production would be worth bringing in. Pricing and subscription details are being finalised, so I won’t guess at them. You can register your interest through the contact form.", actions: true, quick: [] };
+    }
     if (/\b(price|pricing|cost|how much)\b/.test(lower)) {
       return { text: "Monthly content starts from £250 per month. Other work is quoted individually because the scope can vary quite a bit. Mason will confirm the final price personally.\n\nWhat are you hoping to create?", quick: ["Monthly content", "Photography", "Video", "Event coverage"] };
     }
@@ -104,7 +107,7 @@
       return { text: "You can use the contact form, email mason@edgemediacreative.co.uk, or message @masethecreative on Instagram.", actions: true };
     }
     if (/what do you offer|services|what do you do/.test(lower)) {
-      return { text: "Mase the Creative covers photography, video, monthly content, social media management, short-form content, commercial work, campaigns, launches and event coverage.\n\nWhat are you trying to achieve?", quick: ["More consistent content", "Launch something", "Cover an event", "Refresh my visuals"] };
+      return { text: "Mase the Creative covers photography, video, monthly content, social media management, short-form content, commercial work, campaigns, launches and event coverage. Content Direction is the monthly guidance membership for businesses that want to create more content themselves.\n\nWhat are you trying to achieve?", quick: ["Create content myself", "More consistent content", "Launch something", "Cover an event"] };
     }
 
     if (enquiry.step === 0 && /regular|monthly/.test(lower)) {
